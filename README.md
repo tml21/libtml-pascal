@@ -29,7 +29,7 @@ For additional information about getting support for libTML got to [http://www.l
   [1]: http://www.libtml.org/info/
   [2]: https://www.embarcadero.com/de/products/rad-studio
   [3]: http://www.lazarus-ide.org/
-  [4]: https://github.com/tml21/libtml-pascal
+  [4]: https://github.com/tml21/libtml-c
   [5]: http://www.libtml.org/docs/libtml-pascal/
   [6]: https://groups.google.com/forum/#!forum/libtml
   [7]: https://groups.google.com/forum/#!forum/libtml/join

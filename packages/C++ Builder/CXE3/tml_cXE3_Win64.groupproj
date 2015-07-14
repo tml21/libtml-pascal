@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{1382BED2-23EC-418A-9703-EA763F1A4207}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Win64\tml_cXE3_r.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="tml_cXE3_r">
+        <MSBuild Projects="Win64\tml_cXE3_r.cbproj"/>
+    </Target>
+    <Target Name="tml_cXE3_r:Clean">
+        <MSBuild Projects="Win64\tml_cXE3_r.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="tml_cXE3_r:Make">
+        <MSBuild Projects="Win64\tml_cXE3_r.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="tml_cXE3_r"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="tml_cXE3_r:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="tml_cXE3_r:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -1,0 +1,202 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{B5842F63-FB91-48C2-8903-04C752B83844}</ProjectGuid>
+			<ProjectType>CppPackage</ProjectType>
+			<MainSource>tml_cXE_d.cpp</MainSource>
+			<Config Condition="'$(Config)'==''">Release</Config>
+			<ProjectVersion>12.3</ProjectVersion>
+			<Basis>True</Basis>
+			<Platform>Win32</Platform>
+			<AppType>Library</AppType>
+			<FrameworkType>None</FrameworkType>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Basis' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<DesignOnlyPackage>true</DesignOnlyPackage>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<ILINK_Description>TML - Core and Profile - (designtime)</ILINK_Description>
+			<LinkPackageStatics>rtl.lib;vcl.lib;tml_cXE_r.lib</LinkPackageStatics>
+			<IncludePath>..\..\..\src\;$(IncludePath)</IncludePath>
+			<BCC_PCHCache>true</BCC_PCHCache>
+			<BCC_UnderscoreSymbolNames>false</BCC_UnderscoreSymbolNames>
+			<BRCC_Defines>_RTLDLL;USEPACKAGES;NO_STRICT;$(BRCC_Defines)</BRCC_Defines>
+			<DCC_ResourcePath>..\CXE;..\..\..\src;$(DCC_ResourcePath)</DCC_ResourcePath>
+			<ILINK_AppType>Windows</ILINK_AppType>
+			<TASM_Defines>_RTLDLL;USEPACKAGES;NO_STRICT;$(TASM_Defines)</TASM_Defines>
+			<BCC_IncludePath>..\CXE;..\..\..\src;$(BDS)\include;$(BDS)\include\dinkumware;$(BCC_IncludePath)</BCC_IncludePath>
+			<BRCC_IncludePath>..\CXE;..\..\..\src;$(BDS)\include;$(BDS)\include\dinkumware;$(BDS)\include\vcl;$(BRCC_IncludePath)</BRCC_IncludePath>
+			<ILINK_GenerateLibFile>true</ILINK_GenerateLibFile>
+			<ILINK_GenerateImportLibrary>true</ILINK_GenerateImportLibrary>
+			<TASM_IncludePath>..\CXE;..\..\..\src;$(BDS)\include;$(BDS)\include\dinkumware;$(BDS)\include\vcl;$(TASM_IncludePath)</TASM_IncludePath>
+			<DCC_IncludePath>..\CXE;..\..\..\src;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_IncludePath)</DCC_IncludePath>
+			<DCC_UnitSearchPath>..\CXE;..\..\..\src;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_HppOutput>.</DCC_HppOutput>
+			<OutputExt>bpl</OutputExt>
+			<DynamicRTL>true</DynamicRTL>
+			<BCC_GenerateMultithreaded>true</BCC_GenerateMultithreaded>
+			<ILINK_WinAppType>Package</ILINK_WinAppType>
+			<ILINK_ObjectSearchPath>..\CXE;..\..\..\src;$(ILINK_ObjectSearchPath)</ILINK_ObjectSearchPath>
+			<AllPackageLibs>rtl.lib;vcl.lib;tml_cXE_r.lib</AllPackageLibs>
+			<DCC_ObjPath>..\CXE;..\..\..\src;$(DCC_ObjPath)</DCC_ObjPath>
+			<BCC_Defines>NO_STRICT;$(BCC_Defines)</BCC_Defines>
+			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
+			<ILINK_LibraryPath>..\CXE\;..\..\..\src\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<DCC_AdditionalSwitches> -LUDesignIDE</DCC_AdditionalSwitches>
+			<BCC_GenerateDLL>true</BCC_GenerateDLL>
+			<Multithreaded>true</Multithreaded>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<BCC_DontUnderscoreExportedSymbolNames>true</BCC_DontUnderscoreExportedSymbolNames>
+			<BCC_Defines>_DEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
+			<BCC_UserSuppliedOptions> -k</BCC_UserSuppliedOptions>
+			<DCC_Define>DEBUG;$(DCC_Define);$(DCC_Define)</DCC_Define>
+			<BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
+			<IntermediateOutputDir>Debug</IntermediateOutputDir>
+			<ILINK_FullDebugInfo>true</ILINK_FullDebugInfo>
+			<ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
+			<BCC_DisableOptimizations>true</BCC_DisableOptimizations>
+			<TASM_Debugging>Full</TASM_Debugging>
+			<BCC_InlineFunctionExpansion>false</BCC_InlineFunctionExpansion>
+			<TASM_DisplaySourceLines>true</TASM_DisplaySourceLines>
+			<BCC_DebugLineNumbers>true</BCC_DebugLineNumbers>
+			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<BCC_DontUnderscoreExportedSymbolNames>true</BCC_DontUnderscoreExportedSymbolNames>
+			<IntermediateOutputDir>Release</IntermediateOutputDir>
+			<BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
+			<BCC_Defines>NDEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
+			<TASM_Debugging>None</TASM_Debugging>
+			<BCC_UserSuppliedOptions> -r</BCC_UserSuppliedOptions>
+		</PropertyGroup>
+		<ItemGroup>
+			<PackageImport Include="designide.bpi">
+				<BuildOrder>5</BuildOrder>
+				<BuildOrder>10</BuildOrder>
+			</PackageImport>
+			<None Include="pedTMLCommands.hpp">
+				<BuildOrder>5</BuildOrder>
+				<BuildOrder>10</BuildOrder>
+			</None>
+			<PackageImport Include="rtl.bpi">
+				<BuildOrder>-1</BuildOrder>
+				<BuildOrder>1</BuildOrder>
+			</PackageImport>
+			<CppCompile Include="tml_cXE_d.cpp">
+				<BuildOrder>-1</BuildOrder>
+				<BuildOrder>0</BuildOrder>
+			</CppCompile>
+			<ResFiles Include="tml_cXE_d.res">
+				<BuildOrder>7</BuildOrder>
+				<BuildOrder>2</BuildOrder>
+			</ResFiles>
+			<PackageImport Include="tml_cXE_r.bpi">
+				<BuildOrder>7</BuildOrder>
+				<BuildOrder>2</BuildOrder>
+			</PackageImport>
+			<None Include="uTMLRegister.hpp">
+				<BuildOrder>8</BuildOrder>
+				<BuildOrder>1</BuildOrder>
+			</None>
+			<PackageImport Include="vcl.bpi">
+				<BuildOrder>6</BuildOrder>
+			</PackageImport>
+			<DelphiCompile Include="..\..\..\src\pedTMLCommands.pas">
+				<BuildOrder>3</BuildOrder>
+				<BuildOrder>12</BuildOrder>
+			</DelphiCompile>
+			<ResFiles Include="..\..\..\src\uTMLRegister.dcr">
+				<BuildOrder>-1</BuildOrder>
+				<BuildOrder>9</BuildOrder>
+			</ResFiles>
+			<DelphiCompile Include="..\..\..\src\uTMLRegister.pas">
+				<BuildOrder>4</BuildOrder>
+				<BuildOrder>11</BuildOrder>
+			</DelphiCompile>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Basis">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Cpp.Targets')" Project="$(BDS)\Bin\CodeGear.Cpp.Targets"/>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+		<ProjectExtensions>
+			<Borland.Personality>CPlusPlusBuilder.Personality.12</Borland.Personality>
+			<Borland.ProjectType>CppPackage</Borland.ProjectType>
+			<BorlandProject>
+				<CPlusPlusBuilder.Personality>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">1</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">1</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1033</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName">wobe-systems GmbH</VersionInfoKeys>
+						<VersionInfoKeys Name="FileDescription">TML - Core and Profile - (designtime)</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.1.0.1</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright">Copyright (c) 2012-2015</VersionInfoKeys>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">1.1.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Debugging>
+						<Debugging Name="DebugSourceDirs"/>
+					</Debugging>
+					<Parameters>
+						<Parameters Name="RemoteHost"/>
+						<Parameters Name="RemotePath"/>
+						<Parameters Name="RemoteParams"/>
+						<Parameters Name="RemoteLauncher"/>
+						<Parameters Name="UseRemoteLauncher">False</Parameters>
+						<Parameters Name="RemoteCWD"/>
+						<Parameters Name="RemoteDebug">False</Parameters>
+					</Parameters>
+					<Excluded_Packages/>
+					<Source>
+						<Source Name="MainSource">tml_cXE_d.cpp</Source>
+					</Source>
+					<ProjectProperties>
+						<ProjectProperties Name="AutoShowDeps">False</ProjectProperties>
+						<ProjectProperties Name="ManagePaths">True</ProjectProperties>
+						<ProjectProperties Name="VerifyPackages">True</ProjectProperties>
+					</ProjectProperties>
+				</CPlusPlusBuilder.Personality>
+				<Platforms>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

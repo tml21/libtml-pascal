@@ -1,0 +1,48 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{2F285A41-F09C-4E34-805D-27281DE63FF7}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="tml_c2010_r.cbproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="tml_c2010_d.cbproj">
+				<Dependencies>tml_c2010_r.cbproj</Dependencies>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="tml_c2010_r">
+			<MSBuild Projects="tml_c2010_r.cbproj"/>
+		</Target>
+		<Target Name="tml_c2010_r:Clean">
+			<MSBuild Targets="Clean" Projects="tml_c2010_r.cbproj"/>
+		</Target>
+		<Target Name="tml_c2010_r:Make">
+			<MSBuild Targets="Make" Projects="tml_c2010_r.cbproj"/>
+		</Target>
+		<Target DependsOnTargets="tml_c2010_r" Name="tml_c2010_d">
+			<MSBuild Projects="tml_c2010_d.cbproj"/>
+		</Target>
+		<Target DependsOnTargets="tml_c2010_r:Clean" Name="tml_c2010_d:Clean">
+			<MSBuild Targets="Clean" Projects="tml_c2010_d.cbproj"/>
+		</Target>
+		<Target DependsOnTargets="tml_c2010_r:Make" Name="tml_c2010_d:Make">
+			<MSBuild Targets="Make" Projects="tml_c2010_d.cbproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="tml_c2010_r;tml_c2010_d"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="tml_c2010_r:Clean;tml_c2010_d:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="tml_c2010_r:Make;tml_c2010_d:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>

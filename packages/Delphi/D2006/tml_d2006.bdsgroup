@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<PersonalityInfo>
+		<Option>
+			<Option Name="Personality">Default.Personality</Option>
+			<Option Name="ProjectType"></Option>
+			<Option Name="Version">1.0</Option>
+			<Option Name="GUID">{AE9B63EA-93D9-4DB7-8ABA-51D53350EE9F}</Option>
+		</Option>
+	</PersonalityInfo>
+	<Default.Personality>  <Projects>
+      <Projects Name="tml_d2006_r.bpl">tml_d2006_r.bdsproj</Projects>
+      <Projects Name="tml_d2006_d.bpl">tml_d2006_d.bdsproj</Projects>
+      <Projects Name="Targets">tml_d2006_r.bpl tml_d2006_d.bpl</Projects>
+    </Projects>
+    <Dependencies>
+      <Dependency GUID="{A415CD75-8159-436F-BD9D-7BA88183FBCE}">
+        <Dependency GUID="{A415CD75-8159-436F-BD9D-8BA88183FBCE}"/>
+      </Dependency>
+    </Dependencies>
+  </Default.Personality>
+</BorlandProject>

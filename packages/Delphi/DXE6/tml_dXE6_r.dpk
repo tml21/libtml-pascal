@@ -1,0 +1,48 @@
+package tml_dXE6_r;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'TML/Sidex - (runtime)'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  {$if defined(WIN32) or defined(WIN64)}vcl,{$endif}
+  {$if defined(ANDROID)}fmx,{$endif}
+  rtl;
+
+contains
+  cSidexDocument in '..\..\..\src\cSidexDocument.pas',
+  uSidexErrors in '..\..\..\src\uSidexErrors.pas',
+  uSidexLib in '..\..\..\src\uSidexLib.pas',
+  uSidexTypes in '..\..\..\src\uSidexTypes.pas',
+  uSidexVariant in '..\..\..\src\uSidexVariant.pas',
+  uTMLClasses in '..\..\..\src\uTMLClasses.pas',
+  uTMLCore in '..\..\..\src\uTMLCore.pas',
+  uTMLErrors in '..\..\..\src\uTMLErrors.pas',
+  uTMLTypes in '..\..\..\src\uTMLTypes.pas';
+
+end.

@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{37AAD620-1233-4F84-A032-2157FB8A2467}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="tml_dXE4_r.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="tml_dXE4_d.dproj">
+            <Dependencies>tml_dXE4_r.dproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="tml_dXE4_r">
+        <MSBuild Projects="tml_dXE4_r.dproj"/>
+    </Target>
+    <Target Name="tml_dXE4_r:Clean">
+        <MSBuild Projects="tml_dXE4_r.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="tml_dXE4_r:Make">
+        <MSBuild Projects="tml_dXE4_r.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="tml_dXE4_d" DependsOnTargets="tml_dXE4_r">
+        <MSBuild Projects="tml_dXE4_d.dproj"/>
+    </Target>
+    <Target Name="tml_dXE4_d:Clean" DependsOnTargets="tml_dXE4_r:Clean">
+        <MSBuild Projects="tml_dXE4_d.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="tml_dXE4_d:Make" DependsOnTargets="tml_dXE4_r:Make">
+        <MSBuild Projects="tml_dXE4_d.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="tml_dXE4_r;tml_dXE4_d"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="tml_dXE4_r:Clean;tml_dXE4_d:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="tml_dXE4_r:Make;tml_dXE4_d:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

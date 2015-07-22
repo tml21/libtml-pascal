@@ -85,7 +85,7 @@ const
   {$ifend}
 
   {$if defined(CPU64) or defined(CPUX64)}
-    SidexLibMiddle = '64-';
+    SidexLibMiddle = '_64';
   {$else}
     SidexLibMiddle = '';
   {$ifend}
@@ -104,8 +104,8 @@ const
     {$ifend}
   {$ifend}
 
-  sidexdllname = SidexLibPrefix + SidexLibName + SidexLibMiddle +
-                 SidexLibVersion + SidexLibDebug + '.' + SharedSuffix;
+  sidexdllname = SidexLibPrefix + SidexLibName + SidexLibVersion + SidexLibMiddle +
+                 SidexLibDebug + '.' + SharedSuffix;
 
   {$if defined(ANDROID)}
     SidexAxlLibName   = SidexLibPrefix + 'axl'   + '.' + SharedSuffix;

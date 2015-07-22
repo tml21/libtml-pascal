@@ -70,7 +70,7 @@ uses
 //------------------------------------------------------------------------------
 
 const
-  TMLCoreLibName    = 'tmlCore';
+  TMLCoreLibName    = 'tmlcore';
   TMLCoreLibVersion = '11';
 
   {$if defined(Unix)}
@@ -86,7 +86,7 @@ const
   {$ifend}
 
   {$if defined(CPU64) or defined(CPUX64)}
-    TMLCoreLibMiddle = '64-';
+    TMLCoreLibMiddle = '_64';
   {$else}
     TMLCoreLibMiddle = '';
   {$ifend}
@@ -105,8 +105,8 @@ const
     {$ifend}
   {$ifend}
 
-  tmlcoredllname = TMLCoreLibPrefix + TMLCoreLibName + TMLCoreLibMiddle +
-                   TMLCoreLibVersion + TMLCoreLibDebug + '.' + SharedSuffix;
+  tmlcoredllname = TMLCoreLibPrefix + TMLCoreLibName + TMLCoreLibVersion + TMLCoreLibMiddle +
+                   TMLCoreLibDebug + '.' + SharedSuffix;
 
   {$if defined(ANDROID)}
     SidexVortexLibName = TMLCoreLibPrefix + 'vortex-1.1' + '.' + SharedSuffix;

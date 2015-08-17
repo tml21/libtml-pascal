@@ -91,6 +91,8 @@ private
   FUID          : Cardinal;
   FData         : TSIDEXDocument;
 
+  FSyncReply    : Boolean;
+
   FOnProgress     : TTMLOnProgress;
   FOnCommandReady : TTMLOnCommandReady;
   FOnStatusReply  : TTMLOnStatusReply;
@@ -129,6 +131,7 @@ public
   property LastError    : TML_INT32      read FLastError;
   property LastMessage  : string         read FLastMessage;
   property Data         : TSIDEXDocument read GetData;
+  property SyncReply    : Boolean        read FSyncReply      write FSyncReply;
 
   constructor Create; overload;
   constructor Create(cmdid : TML_COMMAND_ID); overload;
@@ -426,6 +429,8 @@ private
   FProfile     : string;
   FCommands    : TTMLCommands;
 
+  FSyncReply   : Boolean;
+
   // events
   FOnPopulateEventReceiver  : TTMLOnPopulateReceiver;
   FOnPopulateBalReceiver    : TTMLOnPopulateReceiver;
@@ -519,6 +524,7 @@ published
   property TMLCore  : TTMLCore     read GetCore    write SetCore;
   property Profile  : string       read GetProfile write SetProfile;
   property Commands : TTMLCommands read GetCommands;
+  property SyncReply: boolean      read FSyncReply write FSyncReply;
 
   // events
   property OnGetProfileName        : TTMLOnGetProfileName    read FOnGetProfileName
@@ -560,6 +566,7 @@ private
   FLastError      : TML_INT32;
   FLastMessage    : string;
   FDesignIndex    : Integer;    // used by design component only!
+  FSyncReply      : Boolean;
 
   // events
   FOnProgress     : TTMLOnProgress;
@@ -643,6 +650,7 @@ published
   property sidexVersion   : string    read GetSidexVersion;
   property tmlCopyright   : string    read GetTmlCopyright;
   property tmlVersion     : string    read GetTmlVersion;
+  property SyncReply      : boolean   read FSyncReply         write FSyncReply;
 
   // events
   property OnProgress     : TTMLOnProgress     read FOnProgress      write FOnProgress;
@@ -665,12 +673,17 @@ TTMLOnSyncToMainThread_Method   = function(aCmdMsg: TTMLCmdMsg;
 TSyncExecuteCritSec = class(TCriticalSection)
 public
   CmdCallMethod      : TTMLOnCmdCall;
+  CmdRdyMethod       : TTMLOnCommandReady;
+  CmdProgressMethod  : TTMLOnProgress;
+  CmdStatusMethod    : TTMLOnStatusReply;
   DownloadMethod     : TTMLStreamDownloadCallback;
   FinishedMethod     : TTMLStreamFinishedCallback;
   SyncToMainFunction : TTMLOnSyncToMainThread_Function;
   SyncToMainMethod   : TTMLOnSyncToMainThread_Method;
   Command            : TTMLCommand;
   CmdMsg             : TTMLCmdMsg;
+  Core               : TTMLCore;
+  Profile            : TTMLProfile;
   stb                : TTMLStreamTypeBase;
   StreamID           : TML_STREAM_ID;
   p1                 : TML_POINTER;
@@ -679,10 +692,10 @@ public
   s1                 : string;
   o1                 : TObject;
 
-public
   procedure Clear;
   procedure SyncExecute;
 end;
+
 
 function TMLSyncToMainThread(aCallBack: TTMLOnSyncToMainThread_Function;
                              aCmdMsg:   TTMLCmdMsg = nil;
@@ -758,12 +771,17 @@ var
 procedure TSyncExecuteCritSec.Clear;
 begin
   CmdCallMethod      := nil;
+  CmdRdyMethod       := nil;
+  CmdProgressMethod  := nil;
+  CmdStatusMethod    := nil;
   DownloadMethod     := nil;
   FinishedMethod     := nil;
   SyncToMainFunction := nil;
   SyncToMainMethod   := nil;
   Command            := nil;
   CmdMsg             := nil;
+  Core               := nil;
+  Profile            := nil;
   stb                := nil;
   p1                 := nil;
   o1                 := nil;
@@ -780,6 +798,36 @@ begin
   if Assigned(CmdCallMethod) then
   begin
     CmdCallMethod(Command, CmdMsg);
+    if Assigned(CmdMsg) then CmdMsg.ReleaseData;
+  end
+  else if Assigned(CmdRdyMethod) then
+  begin
+    if assigned(Profile) then
+        CmdRdyMethod(Profile, CmdMsg)
+    else if Assigned(Core) then
+        CmdRdyMethod(Core, CmdMsg)
+    else
+        CmdRdyMethod(CmdMsg, CmdMsg);
+    if Assigned(CmdMsg) then CmdMsg.ReleaseData;
+  end
+  else if Assigned(CmdProgressMethod) then
+  begin
+    if assigned(Profile) then
+        CmdProgressMethod(Profile, CmdMsg, i1)
+    else if Assigned(Core) then
+        CmdProgressMethod(Core, CmdMsg, i1)
+    else
+        CmdProgressMethod(CmdMsg, CmdMsg, i1);
+    if Assigned(CmdMsg) then CmdMsg.ReleaseData;
+  end
+  else if Assigned(CmdStatusMethod) then
+  begin
+    if assigned(Profile) then
+        CmdStatusMethod(Profile, CmdMsg, i1, s1)
+    else if Assigned(Core) then
+        CmdStatusMethod(Core, CmdMsg, i1, s1)
+    else
+        CmdStatusMethod(CmdMsg, CmdMsg, i1, s1);
     if Assigned(CmdMsg) then CmdMsg.ReleaseData;
   end
   else if Assigned(DownloadMethod) then
@@ -1037,10 +1085,37 @@ begin
   begin
     if Assigned(cmdmsg.OnProgress) then
     begin
-      try
-        cmdmsg.OnProgress(cmdmsg, cmdmsg, progress);
-      finally
-        cmdmsg.ReleaseData;
+      if cmdmsg.SyncReply and cmdmsg.IsAsync then
+      begin
+        if not Assigned(tmlSyncCallCritSect) then
+        begin
+          tmlSyncCallCritSect := TSyncExecuteCritSec.Create;
+        end;
+        if Assigned(tmlSyncCallCritSect) then
+        begin
+          tmlSyncCallCritSect.Enter;
+          try
+            tmlSyncCallCritSect.Clear;
+            tmlSyncCallCritSect.CmdMsg             := cmdmsg;
+            tmlSyncCallCritSect.i1                 := progress;
+            tmlSyncCallCritSect.CmdProgressMethod  := cmdmsg.OnProgress;
+            {$if  defined(FPC)}
+              TThread.Synchronize(nil, @tmlSyncCallCritSect.SyncExecute);
+            {$else}
+              TThread.Synchronize(nil, tmlSyncCallCritSect.SyncExecute);
+            {$ifend}
+          finally
+            tmlSyncCallCritSect.Leave;
+          end;
+        end;
+      end
+      else
+      begin
+        try
+          cmdmsg.OnProgress(cmdmsg, cmdmsg, progress);
+        finally
+          cmdmsg.ReleaseData;
+        end;
       end;
     end;
   end;
@@ -1058,10 +1133,38 @@ begin
   begin
     if Assigned(cmdmsg.OnStatusReply) then
     begin
-      try
-        cmdmsg.OnStatusReply(cmdmsg, cmdmsg, atype, msg);
-      finally
-        cmdmsg.ReleaseData;
+      if cmdmsg.SyncReply and cmdmsg.IsAsync then
+      begin
+        if not Assigned(tmlSyncCallCritSect) then
+        begin
+          tmlSyncCallCritSect := TSyncExecuteCritSec.Create;
+        end;
+        if Assigned(tmlSyncCallCritSect) then
+        begin
+          tmlSyncCallCritSect.Enter;
+          try
+            tmlSyncCallCritSect.Clear;
+            tmlSyncCallCritSect.CmdMsg             := cmdmsg;
+            tmlSyncCallCritSect.i1                 := atype;
+            tmlSyncCallCritSect.s1                 := msg;
+            tmlSyncCallCritSect.CmdStatusMethod    := cmdmsg.OnStatusReply;
+            {$if  defined(FPC)}
+              TThread.Synchronize(nil, @tmlSyncCallCritSect.SyncExecute);
+            {$else}
+              TThread.Synchronize(nil, tmlSyncCallCritSect.SyncExecute);
+            {$ifend}
+          finally
+            tmlSyncCallCritSect.Leave;
+          end;
+        end;
+      end
+      else
+      begin
+        try
+          cmdmsg.OnStatusReply(cmdmsg, cmdmsg, atype, msg);
+        finally
+          cmdmsg.ReleaseData;
+        end;
       end;
     end;
   end;
@@ -1076,13 +1179,38 @@ begin
   if Assigned(cmdmsg) then
   begin
     if Assigned(cmdmsg.OnCommandReady) then
-    begin
-      try
-        cmdmsg.OnCommandReady(cmdmsg, cmdmsg);
-      finally
-        cmdmsg.ReleaseData;
+      if cmdmsg.SyncReply and cmdmsg.IsAsync then
+      begin
+        if not Assigned(tmlSyncCallCritSect) then
+        begin
+          tmlSyncCallCritSect := TSyncExecuteCritSec.Create;
+        end;
+        if Assigned(tmlSyncCallCritSect) then
+        begin
+          tmlSyncCallCritSect.Enter;
+          try
+            tmlSyncCallCritSect.Clear;
+            tmlSyncCallCritSect.CmdMsg        := cmdmsg;
+            tmlSyncCallCritSect.CmdRdyMethod  := cmdmsg.OnCommandReady;
+            {$if  defined(FPC)}
+              TThread.Synchronize(nil, @tmlSyncCallCritSect.SyncExecute);
+            {$else}
+              TThread.Synchronize(nil, tmlSyncCallCritSect.SyncExecute);
+            {$ifend}
+          finally
+            tmlSyncCallCritSect.Leave;
+          end;
+        end;
+      end
+      else
+      begin
+        try
+          cmdmsg.OnCommandReady(cmdmsg, cmdmsg);
+        finally
+          cmdmsg.ReleaseData;
+        end;
       end;
-    end;
+
     // command finished - free the command and the handle...
     if cmdmsg.IsAsync then
     begin
@@ -1107,10 +1235,39 @@ begin
     begin
       if Assigned(cmdmsg.TMLCore.OnProgress) then
       begin
-        try
-          cmdmsg.TMLCore.OnProgress(cmdmsg.TMLCore, cmdmsg, progress);
-        finally
-          cmdmsg.ReleaseData;
+        if cmdmsg.TMLCore.SyncReply and cmdmsg.IsAsync then
+        begin
+          if not Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect := TSyncExecuteCritSec.Create;
+          end;
+          if Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect.Enter;
+            try
+              tmlSyncCallCritSect.Clear;
+              tmlSyncCallCritSect.CmdMsg             := cmdmsg;
+              tmlSyncCallCritSect.i1                 := progress;
+              tmlSyncCallCritSect.CmdProgressMethod  := cmdmsg.TMLCore.OnProgress;
+              tmlSyncCallCritSect.Core               := cmdmsg.TMLCore;
+
+              {$if  defined(FPC)}
+                TThread.Synchronize(nil, @tmlSyncCallCritSect.SyncExecute);
+              {$else}
+                TThread.Synchronize(nil, tmlSyncCallCritSect.SyncExecute);
+              {$ifend}
+            finally
+              tmlSyncCallCritSect.Leave;
+            end;
+          end;
+        end
+        else
+        begin
+          try
+            cmdmsg.TMLCore.OnProgress(cmdmsg.TMLCore, cmdmsg, progress);
+          finally
+            cmdmsg.ReleaseData;
+          end;
         end;
       end;
     end;
@@ -1131,10 +1288,39 @@ begin
     begin
       if Assigned(cmdmsg.TMLCore.OnStatusReply) then
       begin
-        try
-          cmdmsg.TMLCore.OnStatusReply(cmdmsg.TMLCore, cmdmsg, atype, msg);
-        finally
-          cmdmsg.ReleaseData;
+        if cmdmsg.TMLCore.SyncReply and cmdmsg.IsAsync then
+        begin
+          if not Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect := TSyncExecuteCritSec.Create;
+          end;
+          if Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect.Enter;
+            try
+              tmlSyncCallCritSect.Clear;
+              tmlSyncCallCritSect.CmdMsg             := cmdmsg;
+              tmlSyncCallCritSect.i1                 := atype;
+              tmlSyncCallCritSect.s1                 := msg;
+              tmlSyncCallCritSect.CmdStatusMethod    := cmdmsg.TMLCore.OnStatusReply;
+              tmlSyncCallCritSect.Core               := cmdmsg.TMLCore;
+              {$if  defined(FPC)}
+                TThread.Synchronize(nil, @tmlSyncCallCritSect.SyncExecute);
+              {$else}
+                TThread.Synchronize(nil, tmlSyncCallCritSect.SyncExecute);
+              {$ifend}
+            finally
+              tmlSyncCallCritSect.Leave;
+            end;
+          end;
+        end
+        else
+        begin
+          try
+            cmdmsg.TMLCore.OnStatusReply(cmdmsg.TMLCore, cmdmsg, atype, msg);
+          finally
+            cmdmsg.ReleaseData;
+          end;
         end;
       end;
     end;
@@ -1152,13 +1338,38 @@ begin
     if Assigned(cmdmsg.TMLCore) then
     begin
       if Assigned(cmdmsg.TMLCore.OnCommandReady) then
-      begin
-        try
-          cmdmsg.TMLCore.OnCommandReady(cmdmsg.TMLCore, cmdmsg);
-        finally
-          cmdmsg.ReleaseData;
+        if cmdmsg.TMLCore.SyncReply and cmdmsg.IsAsync then
+        begin
+          if not Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect := TSyncExecuteCritSec.Create;
+          end;
+          if Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect.Enter;
+            try
+              tmlSyncCallCritSect.Clear;
+              tmlSyncCallCritSect.CmdMsg        := cmdmsg;
+              tmlSyncCallCritSect.CmdRdyMethod  := cmdmsg.TMLCore.OnCommandReady;
+              tmlSyncCallCritSect.Core          := cmdmsg.TMLCore;
+              {$if  defined(FPC)}
+                TThread.Synchronize(nil, @tmlSyncCallCritSect.SyncExecute);
+              {$else}
+                TThread.Synchronize(nil, tmlSyncCallCritSect.SyncExecute);
+              {$ifend}
+            finally
+              tmlSyncCallCritSect.Leave;
+            end;
+          end;
+        end
+        else
+        begin
+          try
+            cmdmsg.TMLCore.OnCommandReady(cmdmsg.TMLCore, cmdmsg);
+          finally
+            cmdmsg.ReleaseData;
+          end;
         end;
-      end;
     end;
     // command finished - free the command and the handle...
     if cmdmsg.IsAsync then
@@ -1184,10 +1395,39 @@ begin
     begin
       if Assigned(cmdmsg.Profile.OnProgress) then
       begin
-        try
-          cmdmsg.Profile.OnProgress(cmdmsg.Profile, cmdmsg, progress);
-        finally
-          cmdmsg.ReleaseData;
+        if cmdmsg.Profile.SyncReply and cmdmsg.IsAsync then
+        begin
+          if not Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect := TSyncExecuteCritSec.Create;
+          end;
+          if Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect.Enter;
+            try
+              tmlSyncCallCritSect.Clear;
+              tmlSyncCallCritSect.CmdMsg             := cmdmsg;
+              tmlSyncCallCritSect.i1                 := progress;
+              tmlSyncCallCritSect.CmdProgressMethod  := cmdmsg.Profile.OnProgress;
+              tmlSyncCallCritSect.Profile            := cmdmsg.Profile;
+
+              {$if  defined(FPC)}
+                TThread.Synchronize(nil, @tmlSyncCallCritSect.SyncExecute);
+              {$else}
+                TThread.Synchronize(nil, tmlSyncCallCritSect.SyncExecute);
+              {$ifend}
+            finally
+              tmlSyncCallCritSect.Leave;
+            end;
+          end;
+        end
+        else
+        begin
+          try
+            cmdmsg.Profile.OnProgress(cmdmsg.Profile, cmdmsg, progress);
+          finally
+            cmdmsg.ReleaseData;
+          end;
         end;
       end;
     end;
@@ -1208,10 +1448,39 @@ begin
     begin
       if Assigned(cmdmsg.Profile.OnStatusReply) then
       begin
-        try
-          cmdmsg.Profile.OnStatusReply(cmdmsg.Profile, cmdmsg, atype, msg);
-        finally
-          cmdmsg.ReleaseData;
+        if cmdmsg.Profile.SyncReply and cmdmsg.IsAsync then
+        begin
+          if not Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect := TSyncExecuteCritSec.Create;
+          end;
+          if Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect.Enter;
+            try
+              tmlSyncCallCritSect.Clear;
+              tmlSyncCallCritSect.CmdMsg             := cmdmsg;
+              tmlSyncCallCritSect.i1                 := atype;
+              tmlSyncCallCritSect.s1                 := msg;
+              tmlSyncCallCritSect.CmdStatusMethod    := cmdmsg.Profile.OnStatusReply;
+              tmlSyncCallCritSect.Profile            := cmdmsg.Profile;
+              {$if  defined(FPC)}
+                TThread.Synchronize(nil, @tmlSyncCallCritSect.SyncExecute);
+              {$else}
+                TThread.Synchronize(nil, tmlSyncCallCritSect.SyncExecute);
+              {$ifend}
+            finally
+              tmlSyncCallCritSect.Leave;
+            end;
+          end;
+        end
+        else
+        begin
+          try
+            cmdmsg.Profile.OnStatusReply(cmdmsg.Profile, cmdmsg, atype, msg);
+          finally
+            cmdmsg.ReleaseData;
+          end;
         end;
       end;
     end;
@@ -1229,13 +1498,38 @@ begin
     if Assigned(cmdmsg.Profile) then
     begin
       if Assigned(cmdmsg.Profile.OnCommandReady) then
-      begin
-        try
-          cmdmsg.Profile.OnCommandReady(cmdmsg.Profile, cmdmsg);
-        finally
-          cmdmsg.ReleaseData;
+        if cmdmsg.Profile.SyncReply and cmdmsg.IsAsync then
+        begin
+          if not Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect := TSyncExecuteCritSec.Create;
+          end;
+          if Assigned(tmlSyncCallCritSect) then
+          begin
+            tmlSyncCallCritSect.Enter;
+            try
+              tmlSyncCallCritSect.Clear;
+              tmlSyncCallCritSect.CmdMsg        := cmdmsg;
+              tmlSyncCallCritSect.CmdRdyMethod  := cmdmsg.Profile.OnCommandReady;
+              tmlSyncCallCritSect.Profile       := cmdmsg.Profile;
+              {$if  defined(FPC)}
+                TThread.Synchronize(nil, @tmlSyncCallCritSect.SyncExecute);
+              {$else}
+                TThread.Synchronize(nil, tmlSyncCallCritSect.SyncExecute);
+              {$ifend}
+            finally
+              tmlSyncCallCritSect.Leave;
+            end;
+          end;
+        end
+        else
+        begin
+          try
+            cmdmsg.Profile.OnCommandReady(cmdmsg.Profile, cmdmsg);
+          finally
+            cmdmsg.ReleaseData;
+          end;
         end;
-      end;
     end;
     // command finished - free the command and the handle...
     if cmdmsg.IsAsync then
@@ -1473,9 +1767,10 @@ begin
     tmlDesignInfos[FDesignIndex].LogLevel        := TML_LOG_OFF;
   end;
 
-  FOnProgress     := nil;
-  FOnCommandReady := nil;
-  FOnStatusReply  := nil;
+  FOnProgress          := nil;
+  FOnCommandReady      := nil;
+  FOnStatusReply       := nil;
+  FSyncReply           := false;
 
   SetLength(FProfiles, 0);
 
@@ -2500,6 +2795,7 @@ begin
   FOnPeerRegister_Bal      := nil;
   FOnBusyStatusRequest     := nil;
   FOnCalculation           := nil;
+  FSyncReply               := False;
 
   FProfile  := 'urn:yourcompany.com:' + Name;
   FCommands := TTMLCommands.Create(Self);
@@ -3901,6 +4197,7 @@ begin
   FProgress       := 0;
   FData           := nil;
   FUID            := 0;
+  FSyncReply      := false;
 
   FIsOwner        := TakeOwnership;
   FHandle         := ahandle;

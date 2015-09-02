@@ -1366,6 +1366,7 @@ begin
 
   //Finally we run the thread function
   Result := ptrint(ThreadData.Func(ThreadData.Data));
+  EndThread;
 end;
 
 { FPC specific thread create function to replace Vortex's thread create.
@@ -1387,21 +1388,19 @@ begin
     ThreadData^.Func := func;
     ThreadData^.Data := user_data;
 
-    // Start thread
-    TID := TThreadID(BeginThread(@C2P_Translator, ThreadData));
+    // Start thread suspended
+    TThreadID(thread_def^) := BeginThread(@C2P_Translator, ThreadData);
 
-    if TID <> TThreadID(0) then
+    if TThreadID(thread_def^) > 0 then
     begin
       // Don't free memory here, it will be done in the thread function
       Result := 1;
-      TThreadID(thread_def^) := TID;
     end
     else
     begin
       // Free memory
       dispose(ThreadData);
       Result := 0;
-      TThreadID(thread_def^) := TThreadID(0);
     end;
   end
   else Result := 0;
@@ -1423,9 +1422,11 @@ begin
 
     // Wait for thread
     err := WaitForThreadTerminate(TID, 2000);
+    CloseThread(TID);
 
     // Free resources
-    if free_data = 1 then tml_Sys_Free(thread_def);
+    if free_data = 1 then
+       tml_Sys_Free(thread_def);
 
     if err = 0 then Result := 1
                else Result := 0;

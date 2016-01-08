@@ -58,6 +58,14 @@
 			<DCCReference Include="tml_d2010_r.dcp"/>
 			<DCCReference Include="..\..\..\src\uTMLRegister.pas"/>
 			<DCCReference Include="..\..\..\src\pedTMLCommands.pas"/>
+			<RcItem Include="..\..\..\graphics\TTMLCore.bmp">
+				<ResourceType>Bitmap</ResourceType>
+				<ResourceId>TTMLCore</ResourceId>
+			</RcItem>
+			<RcItem Include="..\..\..\graphics\TTMLProfile.bmp">
+				<ResourceType>Bitmap</ResourceType>
+				<ResourceId>TTMLProfile</ResourceId>
+			</RcItem>
 			<BuildConfiguration Include="Basis">
 				<Key>Base</Key>
 			</BuildConfiguration>

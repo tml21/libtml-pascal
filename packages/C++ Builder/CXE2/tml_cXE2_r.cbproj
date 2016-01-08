@@ -79,7 +79,7 @@
 			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
 			<BCC_GenerateDLL>true</BCC_GenerateDLL>
 			<Multithreaded>true</Multithreaded>
-			<ILINK_LibraryPath>..\CXE2;..\..\..\src;$(BDS)\lib\obj;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<ILINK_LibraryPath>..\..\..\src\;..\CXE2;..\..\..\src;$(BDS)\lib\obj;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.0.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
@@ -263,8 +263,7 @@
 						<Parameters Name="RemoteCWD"/>
 						<Parameters Name="RemoteDebug">False</Parameters>
 					</Parameters>
-					<Excluded_Packages>
-					</Excluded_Packages>
+					<Excluded_Packages/>
 					<Source>
 						<Source Name="MainSource">tml_cXE2_r.cpp</Source>
 					</Source>

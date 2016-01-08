@@ -79,49 +79,57 @@
 			<BCC_UserSuppliedOptions> -r</BCC_UserSuppliedOptions>
 		</PropertyGroup>
 		<ItemGroup>
-			<CppCompile Include="tml_c2010_d.cpp">
-				<BuildOrder>-1</BuildOrder>
-				<BuildOrder>0</BuildOrder>
-			</CppCompile>
-			<PackageImport Include="rtl.bpi">
-				<BuildOrder>-1</BuildOrder>
-				<BuildOrder>1</BuildOrder>
-			</PackageImport>
-			<ResFiles Include="tml_c2010_d.res">
-				<BuildOrder>7</BuildOrder>
-				<BuildOrder>2</BuildOrder>
-			</ResFiles>
-			<DelphiCompile Include="..\..\..\src\pedTMLCommands.pas">
-				<BuildOrder>3</BuildOrder>
-				<BuildOrder>12</BuildOrder>
-			</DelphiCompile>
-			<DelphiCompile Include="..\..\..\src\uTMLRegister.pas">
-				<BuildOrder>4</BuildOrder>
-				<BuildOrder>11</BuildOrder>
-			</DelphiCompile>
-			<PackageImport Include="designide.bpi">
-				<BuildOrder>5</BuildOrder>
-				<BuildOrder>10</BuildOrder>
-			</PackageImport>
-			<PackageImport Include="vcl.bpi">
-				<BuildOrder>6</BuildOrder>
-			</PackageImport>
 			<PackageImport Include="tml_c2010_r.bpi">
 				<BuildOrder>7</BuildOrder>
 				<BuildOrder>2</BuildOrder>
+			</PackageImport>
+			<PackageImport Include="vcl.bpi">
+				<BuildOrder>6</BuildOrder>
 			</PackageImport>
 			<None Include="uTMLRegister.hpp">
 				<BuildOrder>8</BuildOrder>
 				<BuildOrder>1</BuildOrder>
 			</None>
-			<ResFiles Include="..\..\..\src\uTMLRegister.dcr">
-				<BuildOrder>-1</BuildOrder>
-				<BuildOrder>9</BuildOrder>
-			</ResFiles>
 			<None Include="pedTMLCommands.hpp">
 				<BuildOrder>5</BuildOrder>
 				<BuildOrder>10</BuildOrder>
 			</None>
+			<ResFiles Include="..\..\..\src\uTMLRegister.dcr">
+				<BuildOrder>-1</BuildOrder>
+				<BuildOrder>9</BuildOrder>
+			</ResFiles>
+			<PackageImport Include="designide.bpi">
+				<BuildOrder>5</BuildOrder>
+				<BuildOrder>10</BuildOrder>
+			</PackageImport>
+			<PackageImport Include="rtl.bpi">
+				<BuildOrder>-1</BuildOrder>
+				<BuildOrder>1</BuildOrder>
+			</PackageImport>
+			<CppCompile Include="tml_c2010_d.cpp">
+				<BuildOrder>-1</BuildOrder>
+				<BuildOrder>0</BuildOrder>
+			</CppCompile>
+			<ResFiles Include="tml_c2010_d.res">
+				<BuildOrder>7</BuildOrder>
+				<BuildOrder>2</BuildOrder>
+			</ResFiles>
+			<DelphiCompile Include="..\..\..\src\uTMLRegister.pas">
+				<BuildOrder>4</BuildOrder>
+				<BuildOrder>11</BuildOrder>
+			</DelphiCompile>
+			<DelphiCompile Include="..\..\..\src\pedTMLCommands.pas">
+				<BuildOrder>3</BuildOrder>
+				<BuildOrder>12</BuildOrder>
+			</DelphiCompile>
+			<RcItem Include="..\..\..\graphics\TTMLCore.bmp">
+				<ResourceType>Bitmap</ResourceType>
+				<ResourceId>TTMLCore</ResourceId>
+			</RcItem>
+			<RcItem Include="..\..\..\graphics\TTMLProfile.bmp">
+				<ResourceType>Bitmap</ResourceType>
+				<ResourceId>TTMLProfile</ResourceId>
+			</RcItem>
 			<BuildConfiguration Include="Basis">
 				<Key>Base</Key>
 			</BuildConfiguration>

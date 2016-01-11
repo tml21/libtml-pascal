@@ -43,7 +43,6 @@
         <DCC_HppOutput>.</DCC_HppOutput>
         <DesignOnlyPackage>true</DesignOnlyPackage>
         <DCC_AdditionalSwitches>-LUDesignIDE</DCC_AdditionalSwitches>
-        <DCC_Define>$(DCC_Define)</DCC_Define>
         <DCC_UnitSearchPath>..\CXE3;..\..\..\src;$(BDS)\lib;$(BDS)\lib\obj;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_MinorVer>1</VerInfo_MinorVer>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -59,7 +58,6 @@
         <ILINK_LibraryPath>..\..\..\src\;..\CXE3\$(Platform)\$(Config);..\CXE3\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <ILINK_GenerateLibFile>true</ILINK_GenerateLibFile>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-        <Defines>$(Defines)</Defines>
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
         <UsePackages>true</UsePackages>
@@ -108,6 +106,14 @@
         <Icns_MainIcns>$(BDS)\bin\cbuilder_PROJECTICNS.icns</Icns_MainIcns>
     </PropertyGroup>
     <ItemGroup>
+        <RcItem Include="..\..\..\graphics\TTMLCore.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TTMLCore</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\..\graphics\TTMLProfile.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TTMLProfile</ResourceId>
+        </RcItem>
         <PackageImport Include="designide.bpi">
             <BuildOrder>6</BuildOrder>
         </PackageImport>

@@ -73,7 +73,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <DCC_LegacyIFEND>true</DCC_LegacyIFEND>
-        <DCC_HppOutput>..\..\..\packages\C++ Builder\CXE7\</DCC_HppOutput>
+        <DCC_HppOutput>..\..\..\packages\C++ Builder\CXE8\</DCC_HppOutput>
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
         <SanitizedProjectName>tml_dXE8_r</SanitizedProjectName>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>

@@ -118,6 +118,14 @@
 			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.0.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
 		</PropertyGroup>
 		<ItemGroup>
+			<RcItem Include="..\..\..\graphics\TTMLCore.bmp">
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>TTMLCore</ResourceId>
+			</RcItem>
+			<RcItem Include="..\..\..\graphics\TTMLProfile.bmp">
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>TTMLProfile</ResourceId>
+			</RcItem>
 			<PackageImport Include="designide.bpi">
 				<BuildOrder>5</BuildOrder>
 				<BuildOrder>10</BuildOrder>

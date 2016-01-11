@@ -82,6 +82,14 @@
 			<BCC_UserSuppliedOptions> -r</BCC_UserSuppliedOptions>
 		</PropertyGroup>
 		<ItemGroup>
+			<RcItem Include="..\..\..\graphics\TTMLCore.bmp">
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>TTMLCore</ResourceId>
+			</RcItem>
+			<RcItem Include="..\..\..\graphics\TTMLProfile.bmp">
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>TTMLProfile</ResourceId>
+			</RcItem>
 			<PackageImport Include="designide.bpi">
 				<BuildOrder>5</BuildOrder>
 				<BuildOrder>10</BuildOrder>

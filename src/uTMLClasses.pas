@@ -2805,8 +2805,11 @@ destructor TTMLProfile.Destroy;
 begin
   if not (csDesigning in ComponentState) then
   begin
-    RemoveAllEventDestinations;
-    RemoveAllBalDestinations;
+    if Assigned(FTMLCore) then
+    begin
+      RemoveAllEventDestinations;
+      RemoveAllBalDestinations;
+    end;
   end;
   Registered := False;
   FreeAndNil(FCommands);
@@ -3208,11 +3211,6 @@ begin
       raise ETMLError.Create(FLastMessage);
     end
     else FLastMessage := '';
-  end
-  else
-  begin
-    FLastMessage := 'TML Core not assigned';
-    raise ETMLError.Create(FLastMessage);
   end;
 end;
 
@@ -3231,11 +3229,6 @@ begin
       raise ETMLError.Create(FLastMessage);
     end
     else FLastMessage := '';
-  end
-  else
-  begin
-    FLastMessage := 'TML Core not assigned';
-    raise ETMLError.Create(FLastMessage);
   end;
 end;
 
@@ -3960,7 +3953,7 @@ begin
       raise ETMLError.Create(FLastMessage);
     end
     else FLastMessage := '';
-  end
+  end;
 end;
 
 procedure TTMLProfile.UnregisterCommands;
@@ -4006,19 +3999,34 @@ end;
 { TTMLCommands }
 //#---------------------------------------------------------------------
 
+constructor TTMLCommands.Create(AProfile : TTMLProfile);
+begin
+  FProfile := AProfile;
+  {$if defined(FPC)}
+    FList  := TFPList.Create;
+  {$elseif defined(ANDROID)}
+    FList  := System.Generics.Collections.TList<TTMLCommand>.Create;
+  {$else}
+    FList  := TList.Create;
+  {$ifend}
+end;
+
 destructor TTMLCommands.Destroy;
 var
   i: Integer;
 begin
-  for i := 0 to FList.Count - 1 do
+  if Assigned(FList) then
   begin
-    Items[i].FProfile := nil;
-    {$if not defined(AUTOREFCOUNT)}
-    Items[i].Free;
-    {$ifend}
-    Items[i] := nil;
+    for i := 0 to FList.Count - 1 do
+    begin
+      Items[i].FProfile := nil;
+      {$if not defined(AUTOREFCOUNT)}
+      Items[i].Free;
+      {$ifend}
+      Items[i] := nil;
+    end;
+    FreeAndNil(FList);
   end;
-  FreeAndNil(FList);
   inherited Destroy;
 end;
 
@@ -4031,18 +4039,6 @@ end;
 function TTMLCommands.Count: Integer;
 begin
   Result := FList.Count;
-end;
-
-constructor TTMLCommands.Create(AProfile : TTMLProfile);
-begin
-  FProfile := AProfile;
-  {$if defined(FPC)}
-    FList  := TFPList.Create;
-  {$elseif defined(ANDROID)}
-    FList  := System.Generics.Collections.TList<TTMLCommand>.Create;
-  {$else}
-    FList  := TList.Create;
-  {$ifend}
 end;
 
 procedure TTMLCommands.Delete(Index: Integer);
@@ -4105,7 +4101,7 @@ end;
 
 destructor TTMLCommand.Destroy;
 begin
-  if FProfile <> nil then
+  if Assigned(FProfile) then
   begin
     //Break link
     FProfile.DeleteCommand(Self);

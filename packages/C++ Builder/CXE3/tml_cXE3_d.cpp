@@ -2,6 +2,8 @@
 
 #include <System.hpp>
 #pragma hdrstop
+USEFORMNS("..\..\..\src\pedTMLCommands.pas", Pedtmlcommands, propEdTMLCommands);
+//---------------------------------------------------------------------------
 #pragma package(smart_init)
 
 //---------------------------------------------------------------------------

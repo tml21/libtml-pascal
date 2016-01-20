@@ -1,0 +1,183 @@
+object LoggingDlg: TLoggingDlg
+  Left = 472
+  Height = 393
+  Top = 253
+  Width = 449
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Logging'
+  ClientHeight = 393
+  ClientWidth = 449
+  OnClose = FormClose
+  OnShow = FormShow
+  Position = poMainFormCenter
+  LCLVersion = '0.9.28.2'
+  object SetAll_Button: TButton
+    Left = 8
+    Height = 25
+    Top = 360
+    Width = 75
+    Anchors = [akLeft, akBottom]
+    Caption = 'Set all'
+    OnClick = SetAll_ButtonClick
+    TabOrder = 2
+  end
+  object Clear_Button: TButton
+    Left = 88
+    Height = 25
+    Top = 360
+    Width = 75
+    Anchors = [akLeft, akBottom]
+    Caption = 'Clear'
+    OnClick = Clear_ButtonClick
+    TabOrder = 3
+  end
+  object Invert_Button: TButton
+    Left = 168
+    Height = 25
+    Top = 360
+    Width = 75
+    Anchors = [akLeft, akBottom]
+    Caption = 'Invert'
+    OnClick = Invert_ButtonClick
+    TabOrder = 4
+  end
+  object Close_Button: TButton
+    Left = 368
+    Height = 25
+    Top = 360
+    Width = 75
+    Anchors = [akRight, akBottom]
+    Caption = 'Close'
+    OnClick = Close_ButtonClick
+    TabOrder = 0
+  end
+  object Options_GroupBox: TGroupBox
+    Left = 8
+    Height = 340
+    Top = 8
+    Width = 435
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    Caption = 'Options'
+    ClientHeight = 322
+    ClientWidth = 431
+    TabOrder = 1
+    object TML_LOG_VORTEX_INTERN_CheckBox: TCheckBox
+      Tag = 1
+      Left = 8
+      Height = 17
+      Top = 8
+      Width = 252
+      Caption = 'TML_LOG_VORTEX_INTERN: Vortex logging is on'
+      TabOrder = 0
+    end
+    object TML_LOG_VORTEX_VERBOSE_CheckBox: TCheckBox
+      Tag = 2
+      Left = 8
+      Height = 17
+      Top = 32
+      Width = 302
+      Caption = 'TML_LOG_VORTEX_VERBOSE: Vervose Vortex logging is on'
+      TabOrder = 1
+    end
+    object TML_LOG_VORTEX_CMD_CheckBox: TCheckBox
+      Tag = 4
+      Left = 8
+      Height = 17
+      Top = 56
+      Width = 315
+      Caption = 'TML_LOG_VORTEX_CMD: Show log on every Vortex command'
+      TabOrder = 2
+    end
+    object TML_LOG_CORE_IO_CheckBox: TCheckBox
+      Tag = 8
+      Left = 8
+      Height = 17
+      Top = 80
+      Width = 201
+      Caption = 'TML_LOG_CORE_IO: Core I/O logging'
+      TabOrder = 3
+    end
+    object TML_LOG_CORE_API_CheckBox: TCheckBox
+      Tag = 16
+      Left = 8
+      Height = 17
+      Top = 104
+      Width = 170
+      Caption = 'TML_LOG_CORE_API: Core API'
+      TabOrder = 4
+    end
+    object TML_LOG_VORTEX_FRAMES_CheckBox: TCheckBox
+      Tag = 32
+      Left = 8
+      Height = 17
+      Top = 128
+      Width = 261
+      Caption = 'TML_LOG_VORTEX_FRAMES: Vortex frame logging'
+      TabOrder = 5
+    end
+    object TML_LOG_VORTEX_CH_POOL_CheckBox: TCheckBox
+      Tag = 64
+      Left = 8
+      Height = 17
+      Top = 152
+      Width = 300
+      Caption = 'TML_LOG_VORTEX_CH_POOL: Vortex channel pool logging'
+      TabOrder = 6
+    end
+    object TML_LOG_VORTEX_MUTEX_CheckBox: TCheckBox
+      Tag = 128
+      Left = 8
+      Height = 17
+      Top = 176
+      Width = 256
+      Caption = 'TML_LOG_VORTEX_MUTEX: Vortex mutex logging'
+      TabOrder = 7
+    end
+    object TML_LOG_MULTY_SYNC_CMDS_CheckBox: TCheckBox
+      Tag = 256
+      Left = 8
+      Height = 17
+      Top = 200
+      Width = 283
+      Caption = 'TML_LOG_MULTY_SYNC_CMDS: Vortex multi sync cmds'
+      TabOrder = 8
+    end
+    object TML_LOG_VORTEX_HASHTABLE_CheckBox: TCheckBox
+      Tag = 1024
+      Left = 8
+      Height = 17
+      Top = 224
+      Width = 300
+      Caption = 'TML_LOG_VORTEX_HASHTABLE: Vortex hash table logging'
+      TabOrder = 9
+    end
+    object TML_LOG_INTERNAL_DISPATCH_CheckBox: TCheckBox
+      Tag = 2048
+      Left = 8
+      Height = 17
+      Top = 248
+      Width = 337
+      Caption = 'TML_LOG_INTERNAL_DISPATCH: Internal command dispatcher log'
+      TabOrder = 10
+    end
+    object TML_LOG_CONNECTION_OBJ_HANDLING_CheckBox: TCheckBox
+      Tag = 4096
+      Left = 8
+      Height = 17
+      Top = 272
+      Width = 410
+      Caption = 'TML_LOG_CONNECTION_OBJ_HANDLING: Logging to see connectionObj handling'
+      TabOrder = 11
+    end
+    object TML_LOG_STREAM_HANDLING_CheckBox: TCheckBox
+      Tag = 8192
+      Left = 8
+      Height = 17
+      Top = 296
+      Width = 322
+      Caption = 'TML_LOG_STREAM_HANDLING: Logging to see stream handling'
+      TabOrder = 12
+    end
+  end
+end

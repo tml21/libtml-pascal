@@ -76,7 +76,6 @@
         <ILINK_Description>TML - Core and Profile - (designtime)</ILINK_Description>
         <DCC_UnitSearchPath>..\..\..\src\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_Build>1</VerInfo_Build>
-        <Defines>$(Defines)</Defines>
         <VerInfo_Keys>CompanyName=wobe-systems GmbH;FileDescription=TML - Core and Profile - (designtime);FileVersion=1.1.0.1;InternalName=;LegalCopyright=Copyright (c) 2013-2015;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <IncludePath>..\..\..\src\;..\CXE6\$(Platform)\$(Config);..\CXE6\;$(BDS)\include\windows\vcl\design;$(IncludePath)</IncludePath>
@@ -158,6 +157,14 @@
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.0.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
+        <RcItem Include="..\..\..\graphics\TTMLCore.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TTMLCore</ResourceId>
+        </RcItem>
+        <RcItem Include="..\..\..\graphics\TTMLProfile.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TTMLProfile</ResourceId>
+        </RcItem>
         <PackageImport Include="designide.bpi">
             <BuildOrder>6</BuildOrder>
         </PackageImport>

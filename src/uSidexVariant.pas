@@ -167,7 +167,9 @@ type
       const Arguments: TVarDataArray): Boolean; override;
     function GetProperty(var Dest: TVarData; const V: TVarData;
       const Name: string): Boolean; override;
-    function SetProperty(const V: TVarData; const Name: string;
+    function SetProperty(
+      {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+      V: TVarData; const Name: string;
       const Value: TVarData): Boolean; override;
   end;
 
@@ -183,7 +185,9 @@ type
       const Arguments: TVarDataArray): Boolean; override;
     function GetProperty(var Dest: TVarData; const V: TVarData;
       const Name: string): Boolean; override;
-    function SetProperty(const V: TVarData; const Name: string;
+    function SetProperty(
+      {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+      V: TVarData; const Name: string;
       const Value: TVarData): Boolean; override;
   end;
 
@@ -199,7 +203,9 @@ type
       const Arguments: TVarDataArray): Boolean; override;
     function GetProperty(var Dest: TVarData; const V: TVarData;
       const Name: string): Boolean; override;
-    function SetProperty(const V: TVarData; const Name: string;
+    function SetProperty(
+      {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+      V: TVarData; const Name: string;
       const Value: TVarData): Boolean; override;
   end;
 
@@ -215,7 +221,9 @@ type
       const Arguments: TVarDataArray): Boolean; override;
     function GetProperty(var Dest: TVarData; const V: TVarData;
       const Name: string): Boolean; override;
-    function SetProperty(const V: TVarData; const Name: string;
+    function SetProperty(
+      {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+      V: TVarData; const Name: string;
       const Value: TVarData): Boolean; override;
   end;
 
@@ -231,7 +239,9 @@ type
       const Arguments: TVarDataArray): Boolean; override;
     function GetProperty(var Dest: TVarData; const V: TVarData;
       const Name: string): Boolean; override;
-    function SetProperty(const V: TVarData; const Name: string;
+    function SetProperty(
+      {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+      V: TVarData; const Name: string;
       const Value: TVarData): Boolean; override;
   end;
 
@@ -553,7 +563,9 @@ begin
   end;
 end;
 
-function TsidexVarBinary.SetProperty(const V: TVarData; const Name: string;
+function TsidexVarBinary.SetProperty(
+  {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+  V: TVarData; const Name: string;
   const Value: TVarData): Boolean;
 begin
   Result := False;
@@ -798,7 +810,9 @@ begin
   end;
 end;
 
-function TsidexVarList.SetProperty(const V: TVarData; const Name: string;
+function TsidexVarList.SetProperty(
+  {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+  V: TVarData; const Name: string;
   const Value: TVarData): Boolean;
 begin
   Result := False;
@@ -1653,7 +1667,9 @@ begin
   end;
 end;
 
-function TsidexVarDict.SetProperty(const V: TVarData; const Name: string;
+function TsidexVarDict.SetProperty(
+  {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+  V: TVarData; const Name: string;
   const Value: TVarData): Boolean;
 begin
   TsidexDictVarData(V).VsidexData.Items[Name] := Variant(Value);
@@ -1828,7 +1844,9 @@ begin
   end;
 end;
 
-function TsidexVarTable.SetProperty(const V: TVarData; const Name: string;
+function TsidexVarTable.SetProperty(
+  {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+  V: TVarData; const Name: string;
   const Value: TVarData): Boolean;
 begin
   Result := False;
@@ -2683,7 +2701,9 @@ begin
 end;
 
 //------------------------------------------------------------------------------
-function TsidexVarString.SetProperty(const V: TVarData; const Name: string;
+function TsidexVarString.SetProperty(
+  {$if defined(FPC) and (FPC_VERSION >= 3)} var {$else} const {$ifend}
+  V: TVarData; const Name: string;
   const Value: TVarData): Boolean;
 begin
   Result := false;

@@ -70,7 +70,7 @@ uses
 
 const
   SidexLibName    = 'sidex';
-  SidexLibVersion = '11';
+  SidexLibVersion = '12';
 
   {$if defined(Unix)}
     SIDEX_DLLHANDLE_NULL = nil;

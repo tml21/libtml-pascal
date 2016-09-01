@@ -71,7 +71,7 @@ uses
 
 const
   TMLCoreLibName    = 'tmlcore';
-  TMLCoreLibVersion = '11';
+  TMLCoreLibVersion = '12';
 
   {$if defined(Unix)}
     TML_CORE_DLLHANDLE_NULL = nil;
